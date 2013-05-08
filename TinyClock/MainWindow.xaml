@@ -1,0 +1,113 @@
+﻿<Window x:Class="TinyKlok.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:TinyKlok.Properties"
+        xmlns:local="clr-namespace:TinyKlok"
+        Title="MainWindow"
+        Height="60"
+        Width="100"
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        Background="Transparent"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseDoubleClick="Window_MouseDoubleClick"
+        MouseRightButtonDown="Window_MouseRightButtonDown">
+    <Window.Resources>
+        <local:Converters x:Key="convertTheme" />
+    </Window.Resources>
+    <Border CornerRadius="8"
+            Padding="5,0,5,0"
+            Name="rootLayout">
+        <Border.Background>
+            <SolidColorBrush Color="{DynamicResource BackgroundColor}"
+                             Opacity="1"
+                             x:Name="rootBackground" />
+        </Border.Background>
+        <StackPanel>
+            <Viewbox>
+                <Label Name="lblClock"
+                       Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"></Label>
+            </Viewbox>
+            <Viewbox Name="vbStopwatch"
+                     Visibility="Collapsed"
+                     Margin="0,0,0,0">
+                <Label Name="lblStopWatch"
+                       Style="{DynamicResource SelectableLabelStyle}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Visibility="Visible"
+                       MouseLeftButtonDown="lblStopWatch_MouseLeftButtonDown"></Label>
+            </Viewbox>
+            <Popup PlacementTarget="{Binding ElementName=lblClock}"
+                   PopupAnimation="Slide"
+                   Placement="Right"
+                   StaysOpen="True"
+                   Name="popupSettings"
+                   AllowsTransparency="True">
+                <Border Background="{DynamicResource WindowBackground}"
+                        Padding="10"
+                        CornerRadius="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Style="{DynamicResource SettingsLabelStyle}"
+                               FontSize="18"
+                               Content="SETTINGS"
+                               HorizontalAlignment="Center"
+                               Grid.ColumnSpan="2" />
+                        <Label Style="{DynamicResource SettingsLabelStyle}"
+                               FontSize="12"
+                               Content="Opacity:"
+                               Grid.Row="1"
+                               Grid.Column="0" />
+                        <Slider Value="{Binding ElementName=rootBackground, Path=Opacity, Mode=TwoWay}"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                SmallChange="0.1"
+                                Minimum="0"
+                                Maximum="1"
+                                LargeChange="0.1" />
+                        <Label Style="{DynamicResource SettingsLabelStyle}"
+                               FontSize="12"
+                               Content="Theme:"
+                               Grid.Row="2"
+                               Grid.Column="0" />
+
+                        <Label Name="lblTheme"
+                               Content="{Binding Path=Theme, Source={x:Static properties:Settings.Default}, Mode=TwoWay, Converter={StaticResource convertTheme}}"
+                               Style="{DynamicResource SelectableSettingsLabel}"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               MouseLeftButtonDown="lblTheme_MouseLeftButtonDown" />
+                        <Label Content="Exit app"
+                               Style="{DynamicResource SelectableSettingsLabel}"
+                               Grid.Row="4"
+                               Grid.Column="0"
+                               MouseLeftButtonDown="Label_MouseLeftButtonDown_1" />
+
+                        <Label Content="Close"
+                               Style="{DynamicResource SelectableSettingsLabel}"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               MouseLeftButtonDown="Label_MouseLeftButtonDown" />
+
+                    </Grid>
+                </Border>
+            </Popup>
+        </StackPanel>
+    </Border>
+</Window>
